@@ -39,6 +39,40 @@ app.post('/api/quotes', (req, res) => {
     } else {
         res.status(400).send();
     }
+
+})
+
+app.put('/api/quotes', (req, res) => {
+    if (req.query.id !== undefined) {
+        let index;
+        for (let quote in quotes) {
+            if (quote.id === req.query.id) {
+                index = quote.id;
+                break;
+            }
+        }
+        console.log(index);
+        if (req.query.quote !== undefined) {
+            quotes[index].quote = req.query.quote;
+        }
+        if (req.query.person !== undefined) {
+            quotes[index].person = req.query.person;
+        }
+        res.status(204).send(quotes[index]);
+    } else {
+        res.status(404).send();
+    }
+})
+
+app.delete('/api/quotes', (req, res) => {
+    const id = req.query.id;
+    if (id) {
+        const idObject = quotes.findIndex(quote => quote.id === id);
+        delete quotes[idObject - 1];
+        res.status(203).send(quotes);
+    } else {
+        res.send(quotes);
+    }
 })
 
 app.listen(PORT, () => {
