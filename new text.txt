@@ -1,0 +1,24 @@
+
+app.get('localhost:4001/api/quotes/random', (req, res) => {
+    const quote = getRandomElement(quotes);
+    res.send({
+        quote
+    });
+
+})
+
+app.get('localhost:4001/api/quotes', (req, res) => {
+    if (!req.query) {
+        res.status(200).send(quotes);
+    } else {
+        if (req.query.person) {
+            const quotesString = [];
+            for (let quote in quotes) {
+                if (quote[person] === req.query.person) {
+                    quotesString.push(quote);
+                }
+            }
+            res.send({ quotes: quotesString });
+        }
+    }
+})
