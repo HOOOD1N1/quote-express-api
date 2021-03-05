@@ -20,19 +20,15 @@ app.get('/api/quotes/random', (req, res) => {
 })
 
 app.get('/api/quotes', (req, res) => {
-    if (!req.query) {
-        res.status(200).send(quotes);
+    if (req.query.person !== undefined) {
+        const quotesByPerson = quotes.filter(quote => quote.person === req.query.person);
+        res.send({
+            quotes: quotesByPerson
+        });
     } else {
-        if (req.query.person) {
-            const quotesString = [];
-            for (let quote in quotes) {
-                if (quote[person] === req.query.person) {
-                    quotesString.push(quote);
-                }
-            }
-            console.log({ quotes: quotesString })
-            res.send({ quotes: quotesString });
-        }
+        res.send({
+            quotes: quotes
+        });
     }
 })
 
